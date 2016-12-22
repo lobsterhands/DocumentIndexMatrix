@@ -2,8 +2,10 @@
  * Created by Lyle on 12/22/2016.
  */
 
-import java.util.ArrayList;
-import java.util.List;
+import com.sun.xml.internal.fastinfoset.util.StringArray;
+
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class DocIndexMatrix {
     public static void main(String[] args) {
@@ -16,17 +18,18 @@ public class DocIndexMatrix {
 
         int nWords = doc1.getMessageWords().length + doc1.getMessageWords().length;
         System.out.printf("nWords: %s%n", nWords);
-        List<String> wordList = new ArrayList<>();
+        SortedSet<String> wordSet = new TreeSet<>();
 
         for (int i = 0; i < docs.length; i++) {
             String[] messageWords = docs[i].getMessageWords();
             System.out.printf("Document %d: %s%n", (i+1), docs[i].getMessage());
 
             for (int j = 0; j < messageWords.length; j++) {
-                wordList.add(messageWords[j]);
+                wordSet.add(messageWords[j]);
             }
         }
 
-        System.out.println("All words used: " + wordList.toString());
+        System.out.println("Words in set: " + wordSet.toString());
+        System.out.println("Number unique words used: " + wordSet.size());
     }
 }
