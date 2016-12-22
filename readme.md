@@ -1,0 +1,2 @@
+## Working to build a simple term-documented index matrix based on the information in [Introduction to Information Retrieval](http://nlp.stanford.edu/IR-book/html/htmledition/irbook.html "Title").
+### This comes specifically from the [Boolean Retrieval](http://nlp.stanford.edu/IR-book/html/htmledition/boolean-retrieval-1.html "Title") segment.
