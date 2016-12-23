@@ -16,7 +16,11 @@ public class Matrix {
         matrix [x][y] = value;
     }
 
-    int getColNumber() {
+    int getNumRows() {
+        return nRows;
+    }
+
+    int getNumCols() {
         return nCols;
     }
 
