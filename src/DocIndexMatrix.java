@@ -28,34 +28,8 @@ public class DocIndexMatrix {
         System.out.printf("%nDocument Term Matrix:%n");
         displayMatrix(documentTermMatrix);
 
-        String wordToSearch = "am";
-
-        if (mapWordSet.containsKey(wordToSearch)) {
-            System.out.println("Found: '" + wordToSearch + "' at index: " + mapWordSet.get(wordToSearch));
-        } else {
-            System.out.println("'" + wordToSearch + "' not found.");
-        }
-
-        System.out.println("Which documents have this word:");
-        wordToSearch = "name";
-
-        if (mapWordSet.containsKey(wordToSearch)) {
-            int c = mapWordSet.get(wordToSearch);
-            String binaryString = "";
-            for (int r = 0; r < documentTermMatrix.getNumRows(); r++) {
-                binaryString += documentTermMatrix.getElementAt(r, c);
-            }
-
-            for (int i = 0; i < binaryString.length(); i++) {
-                if (binaryString.charAt(i) == '1') {
-                    System.out.printf("Found '%s' in Document %s: %s%n", wordToSearch, docs[i].getId(), docs[i].getMessage());
-                }
-            }
-
-        } else {
-            System.out.println("'" + wordToSearch + "' not found.");
-        }
-
+        simpleRetrieval("name", mapWordSet, docs, documentTermMatrix);
+        simpleRetrieval("fox", mapWordSet, docs, documentTermMatrix);
     }
 
     private static Matrix createDocumentTermMatrix(Document[] docs, SortedMap<String, Integer> map) {
@@ -134,6 +108,27 @@ public class DocIndexMatrix {
         System.out.printf("---------------------------%n");
         for (String key : keys) {
             System.out.printf("%-9s%10s%n", key, map.get(key));
+        }
+    }
+
+    private static void simpleRetrieval(String searchWord, SortedMap<String, Integer> map, Document[] docs, Matrix matrix) {
+        System.out.printf("%nWhich documents have this word: '%s'%n", searchWord);
+
+        if (map.containsKey(searchWord)) {
+            int c = map.get(searchWord);
+            String binaryString = "";
+            for (int r = 0; r < matrix.getNumRows(); r++) {
+                binaryString += matrix.getElementAt(r, c);
+            }
+
+            for (int i = 0; i < binaryString.length(); i++) {
+                if (binaryString.charAt(i) == '1') {
+                    System.out.printf("Found '%s' in Document %s: %s%n", searchWord, docs[i].getId(), docs[i].getMessage());
+                }
+            }
+
+        } else {
+            System.out.println("'" + searchWord + "' not found.");
         }
     }
 }
