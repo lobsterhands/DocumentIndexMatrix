@@ -14,14 +14,12 @@
 	Document 2: [am, and, awesome, bob, i, is, my, name]
 	Document 3: [brown, dog, fox, jumps, lazy, over, quick, the]
 
-
 	Map keys:   am       and      awesome  bob      brown    cool     dog      fox      i        is       jumps    lazy     lyle     my       name     over     quick    the      
 
 	Document Term Matrix:
 	Document 1: 1        1        0        0        0        1        0        0        1        1        0        0        1        1        1        0        0        0        
 	Document 2: 1        1        1        1        0        0        0        0        1        1        0        0        0        1        1        0        0        0        
 	Document 3: 0        0        0        0        1        0        1        1        0        0        1        1        0        0        0        1        1        1        
-
 
 	Which documents have this word: 'name'
 	Found 'name' in Document 1: My name is Lyle, and I am cool.
