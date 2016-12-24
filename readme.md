@@ -3,12 +3,10 @@
 
 --------------------
 
-#### Sample output:
-Document Messages:
-
-Document 1: My name is Lyle, and I am cool.
-
-Document 2: My name is Bob, and I am awesome.
+### Sample output:
+```####Document Messages:
+* Document 1: My name is Lyle, and I am cool.
+* Document 2: My name is Bob, and I am awesome.
 
 Document 3: The quick brown fox jumps over the lazy dog.
 
@@ -42,4 +40,4 @@ Which documents have this word: 'fox'
 
 Found 'fox' in Document 3: The quick brown fox jumps over the lazy dog.
 
-Process finished with exit code 0
+Process finished with exit code 0```
