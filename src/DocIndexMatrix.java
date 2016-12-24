@@ -28,8 +28,10 @@ public class DocIndexMatrix {
         System.out.printf("%nDocument Term Matrix:%n");
         displayMatrix(documentTermMatrix);
 
-        simpleRetrieval("name", mapWordSet, docs, documentTermMatrix);
-        simpleRetrieval("fox", mapWordSet, docs, documentTermMatrix);
+//        simpleRetrieval("name", mapWordSet, docs, documentTermMatrix);
+//        simpleRetrieval("fox", mapWordSet, docs, documentTermMatrix);
+
+        simpleRetrievalAnd("fox is brown", mapWordSet, docs, documentTermMatrix);
     }
 
     private static Matrix createDocumentTermMatrix(Document[] docs, SortedMap<String, Integer> map) {
@@ -131,4 +133,53 @@ public class DocIndexMatrix {
             System.out.println("'" + searchWord + "' not found.");
         }
     }
+
+    private static void simpleRetrievalAnd(String searchPhrase, SortedMap<String, Integer> map, Document[] docs, Matrix matrix) {
+        System.out.printf("%nWhich documents have this word: '%s'%n", searchPhrase);
+        String[] searchWords = searchPhrase.split("\\W+");
+        int[] searchWordWeights = new int[searchWords.length];
+        int[] docWeights = new int[docs.length];
+
+        int wordIndex = 0;
+        for(String word : searchWords) {
+            int wordWeight = 0;
+
+            if (map.containsKey(word)) {
+                int c = map.get(word);
+                String binaryString = "";
+                for (int r = 0; r < matrix.getNumRows(); r++) {
+                    binaryString += matrix.getElementAt(r, c);
+                }
+
+                for (int i = 0; i < binaryString.length(); i++) {
+                    if (binaryString.charAt(i) == '1') {
+                        System.out.printf("Found '%s' in Document %s: %s%n", word, docs[i].getId(), docs[i].getMessage());
+                        docWeights[docs[i].getId() - 1]++;
+                        wordWeight++;
+                    }
+                }
+                searchWordWeights[wordIndex] = wordWeight;
+                wordIndex++;
+            } else {
+                System.out.println("'" + word + "' not found.");
+            }
+        }
+
+        for (int i = 0; i < searchWordWeights.length; i++) {
+            System.out.println("Word: " + searchWords[i] + "; Weight: " + searchWordWeights[i]);
+        }
+
+        int maxWeight = 0;
+        int docId = 0;
+        for (int i = 0; i < docWeights.length; i++) {
+            System.out.printf("Document %s weight: %s%n", docs[i].getId(), docWeights[i]);
+            if (docWeights[i] > maxWeight) {
+                maxWeight = docWeights[i];
+                docId = docs[i].getId();
+            }
+        }
+        System.out.println("Max weight: " + maxWeight + " goes to Document " + docId);
+    }
+
+
 }
