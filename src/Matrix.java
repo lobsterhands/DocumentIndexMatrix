@@ -4,16 +4,18 @@
 public class Matrix {
     int nRows;
     int nCols;
-    boolean[][] matrix;
+    int[][] matrix;
 
     Matrix(int nRows, int nCols) {
         this.nRows = nRows;
         this.nCols = nCols;
-        matrix = new boolean[nRows][nCols];
+        matrix = new int[nRows][nCols];
     }
 
-    void setElementAt(int x, int y, boolean value) {
-        matrix [x][y] = value;
+    void setElementAt(int x, int y, int value) {
+        if (value == 0 || value == 1) {
+            matrix [x][y] = value;
+        }
     }
 
     int getNumRows() {
@@ -24,7 +26,7 @@ public class Matrix {
         return nCols;
     }
 
-    boolean getElementAt(int x, int y) {
+    int getElementAt(int x, int y) {
         return matrix[x][y];
     }
 }
