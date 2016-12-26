@@ -6,13 +6,15 @@ import java.util.*;
 
 public class DocIndexMatrix {
     public static void main(String[] args) {
-        Document[] docs = new Document[3];
+        Document[] docs = new Document[4];
         Document doc1 = new Document("My name is Lyle, and I am cool.");
         docs[0] = doc1;
         Document doc2 = new Document("My name is Bob, and I am awesome.");
         docs[1] = doc2;
         Document doc3 = new Document("The quick brown fox jumps over the lazy dog.");
         docs[2] = doc3;
+        Document doc4 = new Document("The devil's number is 666 and God's is 777.");
+        docs[3] = doc4;
 
         System.out.println("Document Messages:");
         displayDocMessages(docs);
@@ -28,10 +30,8 @@ public class DocIndexMatrix {
         System.out.printf("%nDocument Term Matrix:%n");
         displayMatrix(documentTermMatrix);
 
-//        simpleRetrieval("name", mapWordSet, docs, documentTermMatrix);
-//        simpleRetrieval("fox", mapWordSet, docs, documentTermMatrix);
-
-        simpleRetrievalAnd("fox is brown", mapWordSet, docs, documentTermMatrix);
+        simpleRetrieval("lyle bungee is brown", mapWordSet, docs, documentTermMatrix);
+        simpleRetrieval("is fox god", mapWordSet, docs, documentTermMatrix);
     }
 
     private static Matrix createDocumentTermMatrix(Document[] docs, SortedMap<String, Integer> map) {
@@ -71,8 +71,7 @@ public class DocIndexMatrix {
 
     private static void displayDocumentWordSets(Document[] docs) {
         for(Document d : docs) {
-            System.out.printf("Document %s: ", d.getId() );
-            System.out.printf("%-9s%n", d.getWordSet().toString());
+            System.out.printf("Document %s: %s%n", d.getId(), d.getWordSet().toString());
         }
     }
 
@@ -91,8 +90,7 @@ public class DocIndexMatrix {
 
     private static void displayDocMessages(Document[] docs) {
         for(Document d : docs) {
-            System.out.printf("Document %s: ", d.getId());
-            System.out.printf("%-9s%n", d.getMessage());
+            System.out.printf("Document %s: %s%n", d.getId(), d.getMessage());
         }
     }
 
@@ -113,37 +111,16 @@ public class DocIndexMatrix {
         }
     }
 
-    private static void simpleRetrieval(String searchWord, SortedMap<String, Integer> map, Document[] docs, Matrix matrix) {
-        System.out.printf("%nWhich documents have this word: '%s'%n", searchWord);
-
-        if (map.containsKey(searchWord)) {
-            int c = map.get(searchWord);
-            String binaryString = "";
-            for (int r = 0; r < matrix.getNumRows(); r++) {
-                binaryString += matrix.getElementAt(r, c);
-            }
-
-            for (int i = 0; i < binaryString.length(); i++) {
-                if (binaryString.charAt(i) == '1') {
-                    System.out.printf("Found '%s' in Document %s: %s%n", searchWord, docs[i].getId(), docs[i].getMessage());
-                }
-            }
-
-        } else {
-            System.out.println("'" + searchWord + "' not found.");
-        }
-    }
-
-    private static void simpleRetrievalAnd(String searchPhrase, SortedMap<String, Integer> map, Document[] docs, Matrix matrix) {
-        System.out.printf("%nWhich documents have this word: '%s'%n", searchPhrase);
+    private static void simpleRetrieval(String searchPhrase, SortedMap<String, Integer> map, Document[] docs, Matrix matrix) {
+        System.out.printf("%nWhich documents match this phrase: '%s'%n", searchPhrase);
         String[] searchWords = searchPhrase.split("\\W+");
         int[] searchWordWeights = new int[searchWords.length];
         int[] docWeights = new int[docs.length];
 
-        int wordIndex = 0;
-        for(String word : searchWords) {
-            int wordWeight = 0;
+        for(int w = 0; w < searchWords.length; w++) {
+            String word = searchWords[w];
 
+            int wordWeight = 0;
             if (map.containsKey(word)) {
                 int c = map.get(word);
                 String binaryString = "";
@@ -158,8 +135,10 @@ public class DocIndexMatrix {
                         wordWeight++;
                     }
                 }
-                searchWordWeights[wordIndex] = wordWeight;
-                wordIndex++;
+                System.out.println(binaryString);
+                System.out.println("Current wordIndex: " + word);
+                System.out.println("Current wordWeight: " + wordWeight);
+                searchWordWeights[w] = wordWeight;
             } else {
                 System.out.println("'" + word + "' not found.");
             }
@@ -178,7 +157,10 @@ public class DocIndexMatrix {
                 docId = docs[i].getId();
             }
         }
-        System.out.println("Max weight: " + maxWeight + " goes to Document " + docId);
+        if (maxWeight > 0) {
+            System.out.println("Max weight: " + maxWeight + " goes to Document " + docId);
+            System.out.printf("Return Document %s: %s", docId, docs[docId-1].getMessage());
+        }
     }
 
 
